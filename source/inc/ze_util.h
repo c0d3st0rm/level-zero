@@ -25,7 +25,11 @@
 #  define HMODULE void*
 #  define MAKE_LIBRARY_NAME(NAME, VERSION)    "lib" NAME ".so." VERSION
 #  define MAKE_LAYER_NAME(NAME)    "lib" NAME ".so." L0_VALIDATION_LAYER_SUPPORTED_VERSION
+#  if defined(__APPLE__)
+#  define LOAD_DRIVER_LIBRARY(NAME) dlopen(NAME, RTLD_LAZY|RTLD_LOCAL)
+#  else
 #  define LOAD_DRIVER_LIBRARY(NAME) dlopen(NAME, RTLD_LAZY|RTLD_LOCAL|RTLD_DEEPBIND)
+#  endif
 #  define FREE_DRIVER_LIBRARY(LIB)  if(LIB) dlclose(LIB)
 #  define GET_FUNCTION_PTR(LIB, FUNC_NAME) dlsym(LIB, FUNC_NAME)
 #endif
